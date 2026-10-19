@@ -9,6 +9,6 @@ window.READING_BOOKS = [
     color: "#a74732",
     ink: "#f9e8c8",
     genre: "SCIENCE FICTION",
-    cover: ""
+    cover: "ply-cover.jpg"
   }
 ];
