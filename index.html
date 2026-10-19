@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eee9df">
+  <title>A year in books — 2026</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="books.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header><a class="wordmark" href="./">The reading room<span>EST. 2026</span></a><span class="edition">A PERSONAL COLLECTION</span></header>
+  <main>
+    <section class="intro"><p class="eyebrow">MY YEAR BETWEEN THE PAGES</p><h1>A year in <em>books.</em></h1><p class="lede">The worlds I’ve wandered into.<br>The stories that stayed with me.</p><div class="year"><span>2026</span><span class="year-line"></span><span id="count">01 BOOK READ</span></div></section>
+    <section class="collection" aria-label="Interactive bookshelf">
+      <div class="shelf-label"><span>THE BOOKSHELF</span><span>Pick a spine. Stay for a story. ↘</span></div>
+      <div class="shelf-scene"><div class="book-row" id="books"></div><div class="shelf-edge"></div><div class="shelf-shadow"></div></div>
+      <p class="hint"><span>↻</span> Click a book to turn it over</p>
+    </section>
+    <dialog id="detail" aria-labelledby="review-title"><button class="close" aria-label="Close book review">×</button><div class="detail-art" id="detail-art"></div><div class="review"><p class="eyebrow">FROM MY READING JOURNAL · 2026</p><h2 id="review-title"></h2><p class="author" id="review-author"></p><div class="rating"><span id="stars" aria-hidden="true"></span><span id="rating-text"></span></div><div class="rule"></div><p class="eyebrow">MY TAKE</p><blockquote id="review-text"></blockquote><p class="endnote">One book. A whole other world.</p></div></dialog>
+  </main><footer><span>A little shelf, a lot of worlds.</span><span>READ. REFLECT. REPEAT.</span></footer>
+</body>
+</html>
