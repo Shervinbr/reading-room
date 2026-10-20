@@ -251,7 +251,7 @@ window.READING_BOOKS = [
     "color": "#365649",
     "ink": "#f9e8c8",
     "genre": "",
-    "cover": "",
+    "cover": "https://www.dymocks.com.au/images/never-let-me-go-kazuo-ishiguro-9780571258093.jpg",
     "dateRead": "2026/03/25"
   },
   {
