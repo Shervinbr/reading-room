@@ -20,5 +20,5 @@ window.READING_BOOKS = [
     ink: "#f9e8c8",
     genre: "FICTION",
     cover: "all-fours.jpg"
-  }
+  },
 ];
