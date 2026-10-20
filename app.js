@@ -1,5 +1,25 @@
 const books = window.READING_BOOKS;
 const row = document.querySelector('#books');
+const layoutStyles = document.createElement('link');
+layoutStyles.rel = 'stylesheet';
+layoutStyles.href = 'shelf-layout.css?v=1';
+document.head.append(layoutStyles);
+row.classList.add('mixed-shelves');
+const shelfGroups = [];
+for (let start = 0; start < books.length; start += 7) {
+  const shelf = document.createElement('div');
+  shelf.className = 'mixed-shelf';
+  shelf.setAttribute('role', 'group');
+  shelf.setAttribute('aria-label', `Shelf ${shelfGroups.length + 1}`);
+  const standing = document.createElement('div'); standing.className = 'standing-group';
+  const pile = document.createElement('div'); pile.className = 'pile-group';
+  const perched = document.createElement('div'); perched.className = 'perched-group';
+  const stacked = document.createElement('div'); stacked.className = 'stacked-group';
+  pile.append(perched, stacked);
+  shelf.append(standing, pile);
+  row.append(shelf);
+  shelfGroups.push({ standing, perched, stacked });
+}
 const dialog = document.querySelector('#detail');
 let activeBook;
 function coverContent(book) {
@@ -24,6 +44,13 @@ function coverContent(book) {
 books.forEach((book, index) => {
   const button = document.createElement('button');
   button.className = 'book';
+  const position = index % 7;
+  const shelfGroup = shelfGroups[Math.floor(index / 7)];
+  const horizontal = position === 3 || position === 4;
+  button.classList.add(horizontal ? 'horizontal-book' : 'upright-book');
+  button.style.setProperty('--height', `${224 + (index * 17) % 39}px`);
+  button.style.setProperty('--lean', `${position === 2 ? -7 : position === 6 ? 6 : 0}deg`);
+  button.style.setProperty('--offset', `${index % 2 ? 9 : 0}px`);
   button.style.setProperty('--book-color', book.color);
   button.style.setProperty('--book-ink', book.ink);
   const rated = typeof book.rating === 'number' && book.rating > 0 && book.rating <= 5;
@@ -47,12 +74,8 @@ books.forEach((book, index) => {
     document.querySelector('#detail-art').replaceChildren(coverContent(book));
     dialog.showModal();
   });
-  row.append(button);
+  (horizontal ? shelfGroup.stacked : position >= 5 ? shelfGroup.perched : shelfGroup.standing).append(button);
 });
-// Quiet decorative volumes balance the shelf without inventing reading history.
-const space = document.createElement('div'); space.className = 'future-books'; space.setAttribute('aria-hidden', 'true');
-space.innerHTML = '<i></i><i></i><i></i><span>Room for the next chapter.</span>';
-row.append(space);
 document.querySelector('#count').textContent = `${String(books.length).padStart(2, '0')} ${books.length === 1 ? 'BOOK' : 'BOOKS'} READ`;
 document.querySelector('.close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
