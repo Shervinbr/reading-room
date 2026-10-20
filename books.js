@@ -19,6 +19,6 @@ window.READING_BOOKS = [
     color: "#b86b36",
     ink: "#f9e8c8",
     genre: "FICTION",
-    cover: "Allfourse.jpg"
+    cover: "all-fours.jpg"
   }
 ];
