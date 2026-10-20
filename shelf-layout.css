@@ -1,9 +1,9 @@
 /* A lived-in bookshelf. This supplements your existing styles. */
-#books.mixed-shelves{display:flex;flex-direction:column;gap:50px;padding:0;min-height:0;overflow:visible;perspective:none;align-items:stretch}
-.mixed-shelf{display:flex;justify-content:space-around;align-items:flex-end;gap:55px;padding:28px 35px 15px;position:relative;isolation:isolate}
+#books.mixed-shelves{display:flex;flex-direction:column;gap:18px;padding:0;min-height:0;overflow:visible;perspective:none;align-items:stretch}
+.mixed-shelf{display:flex;justify-content:center;align-items:flex-end;gap:18px;padding:12px 12px 15px;position:relative;isolation:isolate}
 .mixed-shelf:after{content:'';position:absolute;bottom:0;left:0;right:0;height:15px;border-top:3px solid #cfb89b;background:linear-gradient(#c4a783,#b89a75);box-shadow:0 10px 16px #4b37212a;z-index:-1}
 .mixed-shelf:nth-child(even){flex-direction:row-reverse}
-.standing-group,.perched-group{display:flex;align-items:flex-end;gap:6px;padding:0 17px;min-width:0}
+.standing-group,.perched-group{display:flex;align-items:flex-end;gap:2px;padding:0 8px;min-width:0}
 .pile-group{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:258px}
 .perched-group{align-self:center;padding:0 18px}
 .stacked-group{display:flex;flex-direction:column-reverse;align-items:center;gap:0;width:258px}
@@ -29,3 +29,6 @@
 @media(max-width:800px){.mixed-shelf{gap:25px;padding-left:14px;padding-right:14px}.standing-group{gap:3px;padding:0 10px}#books .upright-book{width:49px}#books .upright-book .spine strong{font-size:21px;left:4px}#books .upright-book .spine-author{left:32px;font-size:7px}}
 @media(max-width:600px){#books.mixed-shelves{gap:35px}.mixed-shelf,.mixed-shelf:nth-child(even){flex-direction:column;align-items:center;gap:38px;padding:0}.mixed-shelf:after{display:none}.standing-group,.pile-group{position:relative;padding-bottom:15px;width:100%;justify-content:center}.standing-group:after,.pile-group:after{content:'';position:absolute;bottom:0;left:0;right:0;height:15px;border-top:3px solid #cfb89b;background:linear-gradient(#c4a783,#b89a75);box-shadow:0 9px 16px #4b37212a;z-index:-1}.standing-group{padding-top:15px;gap:9px}.perched-group{width:auto;gap:7px}#books .upright-book{width:57px}#books .upright-book .spine-author{left:38px;font-size:8px}#books .upright-book .spine strong{left:6px;font-size:23px}.standing-group:empty,.pile-group:has(.perched-group:empty):has(.stacked-group:empty){display:none}}
 @media(prefers-reduced-motion:reduce){#books .book{transition:none}}
+/* Tighter spacing on smaller screens, too. */
+@media(max-width:800px){.mixed-shelf{gap:14px;padding-left:8px;padding-right:8px}.standing-group{gap:2px;padding-left:6px;padding-right:6px}}
+@media(max-width:600px){#books.mixed-shelves{gap:18px}.mixed-shelf,.mixed-shelf:nth-child(even){gap:18px;padding:0}.standing-group{gap:3px}.perched-group{gap:3px}}

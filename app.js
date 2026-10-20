@@ -2,11 +2,19 @@ const books = window.READING_BOOKS;
 const row = document.querySelector('#books');
 const layoutStyles = document.createElement('link');
 layoutStyles.rel = 'stylesheet';
-layoutStyles.href = 'shelf-layout.css?v=1';
+layoutStyles.href = 'shelf-layout.css?v=2';
 document.head.append(layoutStyles);
 row.classList.add('mixed-shelves');
 const shelfGroups = [];
-for (let start = 0; start < books.length; start += 7) {
+const bookButtons = [];
+function arrangeShelves() {
+const perShelf = row.clientWidth >= 800 ? 12 : row.clientWidth >= 620 ? 9 : 7;
+shelfGroups.length = 0;
+row.replaceChildren();
+// Balance the final shelf rather than leaving only one or two books on it.
+const shelfCount = Math.ceil(books.length / perShelf);
+const capacity = shelfCount ? Math.ceil(books.length / shelfCount) : perShelf;
+for (let start = 0; start < books.length; start += capacity) {
   const shelf = document.createElement('div');
   shelf.className = 'mixed-shelf';
   shelf.setAttribute('role', 'group');
@@ -19,6 +27,18 @@ for (let start = 0; start < books.length; start += 7) {
   shelf.append(standing, pile);
   row.append(shelf);
   shelfGroups.push({ standing, perched, stacked });
+}
+bookButtons.forEach((button, index) => {
+  const position = index % capacity;
+  const count = Math.min(capacity, books.length - Math.floor(index / capacity) * capacity);
+  const standingCount = Math.max(0, count - 4);
+  const horizontal = position >= standingCount && position < standingCount + Math.min(2, count);
+  const shelfGroup = shelfGroups[Math.floor(index / capacity)];
+  button.classList.remove('horizontal-book', 'upright-book');
+  button.classList.add(horizontal ? 'horizontal-book' : 'upright-book');
+  button.style.setProperty('--lean', `${position === standingCount - 1 ? -3 : position === count - 1 ? 3 : 0}deg`);
+  (horizontal ? shelfGroup.stacked : position >= standingCount ? shelfGroup.perched : shelfGroup.standing).append(button);
+});
 }
 const dialog = document.querySelector('#detail');
 let activeBook;
@@ -44,12 +64,7 @@ function coverContent(book) {
 books.forEach((book, index) => {
   const button = document.createElement('button');
   button.className = 'book';
-  const position = index % 7;
-  const shelfGroup = shelfGroups[Math.floor(index / 7)];
-  const horizontal = position === 3 || position === 4;
-  button.classList.add(horizontal ? 'horizontal-book' : 'upright-book');
   button.style.setProperty('--height', `${224 + (index * 17) % 39}px`);
-  button.style.setProperty('--lean', `${position === 2 ? -7 : position === 6 ? 6 : 0}deg`);
   button.style.setProperty('--offset', `${index % 2 ? 9 : 0}px`);
   button.style.setProperty('--book-color', book.color);
   button.style.setProperty('--book-ink', book.ink);
@@ -74,9 +89,19 @@ books.forEach((book, index) => {
     document.querySelector('#detail-art').replaceChildren(coverContent(book));
     dialog.showModal();
   });
-  (horizontal ? shelfGroup.stacked : position >= 5 ? shelfGroup.perched : shelfGroup.standing).append(button);
+  bookButtons.push(button);
 });
+arrangeShelves();
+let previousWidth = row.clientWidth;
+if (typeof ResizeObserver !== 'undefined') new ResizeObserver(() => {
+  if (row.clientWidth !== previousWidth) {
+    previousWidth = row.clientWidth;
+    arrangeShelves();
+    if (dialog.open) document.querySelector('.close').focus();
+  }
+}).observe(row);
 document.querySelector('#count').textContent = `${String(books.length).padStart(2, '0')} ${books.length === 1 ? 'BOOK' : 'BOOKS'} READ`;
 document.querySelector('.close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
 dialog.addEventListener('close', () => { activeBook?.classList.remove('selected'); activeBook?.focus(); });
+
